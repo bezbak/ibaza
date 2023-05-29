@@ -1,6 +1,12 @@
 import React from 'react'
-
-export default function Result() {
+import { useSelector } from 'react-redux/es/exports';
+export default function Result({Term, Initial}) {
+    const Bag=useSelector(s=>s.bag)
+    const itemCart=useSelector(s=>s.itemCart)
+    let total = 0 ;
+    Bag.map(obj=>{
+      total += (itemCart[obj.id-1].kg_price*obj.Quantity)
+    })
   return (
     <div className='Result Fav-Ins-block'>
         <p className="h4">Результаты предварительного расчёта</p>

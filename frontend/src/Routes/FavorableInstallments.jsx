@@ -11,15 +11,23 @@ import Result from '../comtonents/Installments.Calculator/Resilt';
 import { useSelector } from 'react-redux';
 
 export default function FavorableInstallments(){
+  let percent_25 = 25;
   const Bag=useSelector(s=>s.bag)
   const itemCart=useSelector(s=>s.itemCart)
   let total = 0 ;
   Bag.map(obj=>{
     total += (itemCart[obj.id-1].kg_price*obj.Quantity)
   })
-
-
-
+  function funcTerm(e){
+    setTerm(e.target.value<0? 1:e.target.value)
+    setMonthly((total-(Initial==0?'0':Initial))/(e.target.value<=0? 1:e.target.value))
+  }
+  function funcInitial(e){
+    setInitial(e.target.value<0? Initial:e.target.value)
+    setMonthly((total-(e.target.value<0? Initial:e.target.value))/(Term==0?'1':Term))
+  }
+  
+  
   // CalculateLoan///////////////
   const [CountrySelectionFirst, setCountrySelectionFirst]=useState(false)
   const [CountrySelectionSecond, setCountrySelectionSecond]=useState(false)
@@ -29,6 +37,8 @@ export default function FavorableInstallments(){
   const [CountrySelectionActiveSecond, setCountrySelectionActiveSecond] = useState('DOSCREDOBANK');
   const [Term, setTerm] = useState('');
   const [Initial, setInitial] = useState('');
+  const [totalProducts,setTotalProducts] = useState(total) ;
+  const [Monthly ,setMonthly ] = useState((total-(Initial==0?'0':Initial))/(Term==0?'1':Term)) ;
   const countriesFirst=[
       'Онлайн',
       'Онлайн',
@@ -64,9 +74,7 @@ export default function FavorableInstallments(){
           <ItemCarts/>
           <BankTerms/>
           <Loan/>
-
           {/* <CalculateLoan/> */}
-
           <div className='CalculateLoan Fav-Ins-block'>
             <p className="h4">Рассчитать кредит</p>
             <div className={`input CalculateLoanMain ${CountrySelectionFirst?"":"active"}`}>
@@ -111,15 +119,45 @@ export default function FavorableInstallments(){
             </div>
             <div className="input Term">
                 <p>Срок</p>
-                <input type="text" value={Term} onChange={(e)=>{setTerm(e.target.value)}} placeholder='Срок'/>
+                <input type="number" value={Term} onChange={(e)=>{funcTerm(e)}} placeholder='Срок'/>
             </div>
             <div className="input initial">
                 <p>Первоначальный взнос</p>
-                <input type="text" value={Initial} onChange={(e)=>{setInitial(e.target.value)}} placeholder='Взнос'/>
+                <input type="number" value={Initial} onChange={(e)=>{funcInitial(e)}} placeholder='Взнос'/>
             </div>
           </div>
           <Consult/>
-          <Result/>
+          <div className='Result Fav-Ins-block'>
+            <p className="h4">Результаты предварительного расчёта</p>
+            <div className="ResiltMain">
+              <p>
+                  <span>Сумма продуктов</span>
+                  <span className='big'>{Math.round(totalProducts)} сом</span>
+              </p><hr />
+              <p>
+                  <span>Первоначальный взнос</span>
+                  <span className='big'>{Initial==0?'0':Math.round(Initial)} сом</span>
+              </p><hr />
+              <p>
+                  <span>Срок кредита</span>
+                  <span className='big'>{Term == 0?'1':Math.round(Term)} месяца</span>
+              </p><hr />
+              <p>
+                  <span>Ежемесячный платеж</span>
+                  <span className='big'>{Monthly == 0?'0':Math.round(Monthly+((Monthly/100)*percent_25))} сом</span>
+              </p><hr />
+              <p>
+                  <span>Общая выплата</span>
+                  <span className='big'>{Math.round(totalProducts+((totalProducts/100)*percent_25))} сом</span>
+              </p><hr />
+              <p>
+                  <span>Наценка</span>
+                  <span className='big'>{Math.round((totalProducts/100)*percent_25)} сом</span>
+              </p><hr />
+            </div>
+            <input type="submit" value="Заполнить заявку" />
+          </div>
+          {/* <Result Term={Term} Initial={Initial}/> */}
         </div>
       </div>
     </div>

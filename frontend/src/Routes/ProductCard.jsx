@@ -69,7 +69,7 @@ export default function ProductCard() {
                             </svg>
                         </button>
                         <div className={`showElement ${Characteristics?"active":""}`}>
-                            {itemCart[ProductId].Characteristics}
+                            {itemCart[ProductId].description}
                         </div>
 
                         </div>

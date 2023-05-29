@@ -1806,6 +1806,12 @@ footer{
             filter: invert(1);
         }
     }
+    .CalculateLoanMainBlock {
+        .div{
+            background: var(--lightDark_content);
+            
+        }
+    }
 }
 
 
@@ -2148,6 +2154,30 @@ footer{
     }
 }
 // animations//////////////////
+
+.CalculateLoanMainBlock,.CountrySelectionMedia  {
+    .button{
+        transition: .4s;
+        border-bottom: solid 3px white!important;
+    }
+    .button.active{
+        border-radius: 25px 25px 0 0!important;
+    }
+    .div{
+        display: flex;
+        flex-wrap: wrap;
+        padding: 20px;
+        border-radius:0 0 25px 25px ;
+        gap: 20px;
+        background: var(--lightGray_content);
+        button{
+            font-size: 12px;
+            width: 100%;
+            text-align: start;
+            background: none!important;
+        }
+    }
+}
 
 
 @media (max-width:1500px){
